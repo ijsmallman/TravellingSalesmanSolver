@@ -1,27 +1,10 @@
 import numpy as np
+from CommonRouteMethods import  separation, circular_route_length
 
 def init_pheramone_matrix(n):
     matrix = np.ones((n,n))
     #np.fill_diagonal(matrix, 0)
-    return matrix
-
-def generate_random_route(n):
-    route = range(n)
-    np.random.shuffle(route)
-    return route
-
-def separation(coordA,coordB):
-    xSep = coordB[0] - coordA[0]
-    ySep = coordB[1] - coordA[1]
-    return np.sqrt( xSep*xSep + ySep*ySep )
-
-def rotate(l,n):
-    n = n % len(l)
-    return l[-n:] + l[:-n]
-    
-def circular_route_length(node_map, route):
-    return sum(map(separation, [node_map[i] for i in route], rotate([node_map[i] for i in route],-1)))
-    
+    return matrix  
 
 def quality_factor(node_map, current_node, destination_node):
     sep = separation(node_map[current_node], node_map[destination_node])

@@ -1,16 +1,5 @@
 import random
-import math
-    
-def separation(coordA,coordB):
-    xSep = coordB[0] - coordA[0]
-    ySep = coordB[1] - coordA[1]
-    return math.sqrt( xSep*xSep + ySep*ySep )
-
-def generate_random_map(n):
-    route = []
-    for i in xrange(n):
-        route.append([random.random(),random.random()])
-    return route
+from CommonRouteMethods import separation, circular_route_length, generate_random_route
 
 def nearest_neighbours(parent, node):
     node_index = parent.index(node)
@@ -58,7 +47,6 @@ def closest_available_neighbour(node_map, child, node, neighbours):
     #return the closestNeighbour
     return closestNeighbour
     
-
 def greedy_crossover(node_map, mother, father):
     
     # Start on node 0
@@ -84,11 +72,7 @@ def greedy_crossover(node_map, mother, father):
     
 def rotate(l,n):
     n = n % len(l)
-    return l[-n:] + l[:-n]
-    
-def circular_route_length(node_map, route):
-    return sum(map(separation, [node_map[i] for i in route], rotate([node_map[i] for i in route],-1)))
-    
+    return l[-n:] + l[:-n]    
     
 def get_fitness(node_map, route):
     return 1.0 / circular_route_length(node_map, route)
@@ -118,11 +102,6 @@ def roulette_parent_selector(sorted_routes):
         
         if accFit > rand:
             return route[1]
-
-def generate_random_route(n):
-    route = range(n)
-    random.shuffle(route) # N.B. shuffle changes order of route
-    return route
 
 def generate_initial_population(nodes_in_map, population_size):
     return [generate_random_route(nodes_in_map) for x in range(population_size)]
