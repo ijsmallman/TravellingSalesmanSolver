@@ -1,5 +1,6 @@
 import GeneticSolver as gs
 import SimulatedAnnealingSolver as sas
+import AntColonySolver as acs
 import matplotlib.pyplot as plt
 
 def plot_route(node_map, route):
@@ -28,7 +29,19 @@ print "================="
 print shortest_route
 print route_lengths[-1]
 #plt.plot(route_lengths)
-#plt.show()  
+#plt.show()
+
+ant_count = 20
+evaporation_fraction = 0.3
+route_lengths, shortest_route = acs.find_shortest_route(cities, ant_count, evaporation_fraction)
+
+print ""
+print "Ant Colony Optimisation"
+print "======================="
+print shortest_route
+print route_lengths[-1]
+#plt.plot(route_lengths)
+#plt.show()
 
 steps = 20000
 tMax = 100.0
