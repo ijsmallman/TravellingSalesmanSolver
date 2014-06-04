@@ -90,7 +90,7 @@ def sort_routes(node_map, routes):
     # Sort routes according to fitness (largest fitness first)
     return sorted(zip(normed_fitness_list, routes), reverse = True)
     
-def roulette_parent_selector(sorted_routes):  
+def roulette_parent_selector(sorted_routes, tuning_params):  
 
     # Select a parent using roulette method
     rand = random.random()
@@ -103,10 +103,12 @@ def roulette_parent_selector(sorted_routes):
         if accFit > rand:
             return route[1]
 
-def tournament_parent_selector(sorted_routes):
+def tournament_parent_selector(sorted_routes, tournament_size):
     
     pop_size = len(sorted_routes)
-    tournament_size = pop_size/4
+    
+    if tournament_size == None:
+        tournament_size = pop_size/4
     
     # Select tournament_size parents from the population
     sampled_parents = [random.randint(0,pop_size) for i in xrange(tournament_size)]
@@ -133,7 +135,17 @@ def mutate(route, mutation_percentage):
     while random.random() < mutation_percentage:
         random_swap(route)
 
-def find_shortest_route(node_map, population_size, selector, crossover, mutation_percentage, convergence_percentage = 0.75, time_out_steps = 1000):
+def find_shortest_route(node_map, population_size, selector, crossover, **options):
+    
+    # Initialise tuning params
+    # - default mutation_percentage to 5%
+    mutation_percentage = options.get("mutation_percentage", 0.05)
+    # - default convergence_percentage to 90%
+    convergence_percentage = options.get("convergence_percentage", 0.95)
+    # - default time_steps to 1000
+    timeout_steps = options.get("timeout_steps", 1000)
+    # - default selector tuning param to None
+    selector_tuning_params = options.get("selector_tuning_params", None)
     
     # Create list for route length tracking over time
     route_lengths = []
@@ -154,8 +166,8 @@ def find_shortest_route(node_map, population_size, selector, crossover, mutation
         while len(new_population) < population_size:
             
             # Select two parents using the selector method
-            mother = selector(sorted_routes)
-            father = selector(sorted_routes)
+            mother = selector(sorted_routes,selector_tuning_params)
+            father = selector(sorted_routes,selector_tuning_params)
             
             # Breed parents
             child = crossover(node_map, mother, father)
@@ -180,7 +192,7 @@ def find_shortest_route(node_map, population_size, selector, crossover, mutation
         
         # Check for timeout
         step_count += 1
-        if (step_count > time_out_steps):
+        if (step_count > timeout_steps):
             break     
     
     return route_lengths, population[0]

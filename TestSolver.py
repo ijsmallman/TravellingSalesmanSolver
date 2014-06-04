@@ -21,8 +21,7 @@ cities = [[1., 0.], [0.951057, 0.309017], [0.809017, 0.587785], \
          [0.587785, -0.809017], [0.809017, -0.587785], [0.951057, -0.309017]]
 
 population_count = 50
-mutation_percentage = 0.05
-route_lengths, shortest_route = gs.find_shortest_route(cities, population_count, gs.roulette_parent_selector, gs.greedy_crossover, mutation_percentage)
+route_lengths, shortest_route = gs.find_shortest_route(cities, population_count, gs.roulette_parent_selector, gs.greedy_crossover)
 
 print "Genetic Algorithm"
 print "================="
@@ -32,9 +31,7 @@ print route_lengths[-1]
 #plt.plot(route_lengths)
 #plt.show()
 
-population_count = 50
-mutation_percentage = 0.05
-route_lengths, shortest_route = gs.find_shortest_route(cities, population_count, gs.tournament_parent_selector, gs.greedy_crossover, mutation_percentage)
+route_lengths, shortest_route = gs.find_shortest_route(cities, population_count, gs.tournament_parent_selector, gs.greedy_crossover, selector_tuning_params=10)
 
 print ""
 print " - Tournament Selection"
