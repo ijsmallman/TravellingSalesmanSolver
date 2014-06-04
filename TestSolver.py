@@ -26,6 +26,18 @@ route_lengths, shortest_route = gs.find_shortest_route(cities, population_count,
 
 print "Genetic Algorithm"
 print "================="
+print " - Roulette Selection"
+print shortest_route
+print route_lengths[-1]
+#plt.plot(route_lengths)
+#plt.show()
+
+population_count = 50
+mutation_percentage = 0.05
+route_lengths, shortest_route = gs.find_shortest_route(cities, population_count, gs.tournament_parent_selector, gs.greedy_crossover, mutation_percentage)
+
+print ""
+print " - Tournament Selection"
 print shortest_route
 print route_lengths[-1]
 #plt.plot(route_lengths)

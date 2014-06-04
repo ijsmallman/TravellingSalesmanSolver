@@ -103,8 +103,23 @@ def roulette_parent_selector(sorted_routes):
         if accFit > rand:
             return route[1]
 
+def tournament_parent_selector(sorted_routes):
+    
+    pop_size = len(sorted_routes)
+    tournament_size = pop_size/4
+    
+    # Select tournament_size parents from the population
+    sampled_parents = [random.randint(0,pop_size) for i in xrange(tournament_size)]
+    
+    # Since routes are already sorted, the best parent will be at the index
+    # of the lowest value in sampled_parents
+    selected_parent_index = (sorted(sampled_parents))[0]
+    
+    return sorted_routes[selected_parent_index][1]
+    
+
 def generate_initial_population(nodes_in_map, population_size):
-    return [generate_random_route(nodes_in_map) for x in range(population_size)]
+    return [generate_random_route(nodes_in_map) for x in xrange(population_size)]
 
 def random_swap(route):
     n = len(route)
